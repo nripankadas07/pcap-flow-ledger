@@ -1,0 +1,17 @@
+[
+  {
+    "args": [
+      "example.pcap"
+    ],
+    "exit": 0,
+    "expect": {
+      "packets": 2
+    }
+  },
+  {
+    "args": [
+      "invalid.txt"
+    ],
+    "exit": 2
+  }
+]

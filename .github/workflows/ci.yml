@@ -1,0 +1,28 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.10', '3.12', '3.14']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install setuptools wheel
+      - run: python verify.py
+      - name: Documented source install outside source
+        run: |
+          python -m venv /tmp/documented-install
+          /tmp/documented-install/bin/python -m pip install .
+          cd /tmp
+          /tmp/documented-install/bin/python -c "import pcap_flow_ledger"
